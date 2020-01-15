@@ -17,7 +17,7 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".js"],
-    modules: ["node_modules", "src"]
+    modules: ["src"]
   },
   externals: [nodeExternals()]
 };
