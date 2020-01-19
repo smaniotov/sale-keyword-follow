@@ -1,12 +1,10 @@
-import { buildSchemaSync, ResolverData } from "type-graphql";
-import { Container } from "typedi";
-import { AlertResolver } from "../resolvers";
+import { buildSchemaSync } from 'type-graphql';
+import { Container } from 'typedi';
+import { AlertResolver } from '../resolvers';
 
 const schema = buildSchemaSync({
   resolvers: [AlertResolver],
-  container: ({ context }: ResolverData<any>) => {
-    return Container.of(context.requestId);
-  }
+  container: ({ context }) => Container.of(context.requestId),
 });
 
 export default schema;
