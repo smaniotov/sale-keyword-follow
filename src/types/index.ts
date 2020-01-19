@@ -1,1 +1,1 @@
-export * from "./AlertType";
+export * from './Alert';
