@@ -1,20 +1,13 @@
-import { ApolloServer } from "apollo-server-fastify";
-import dotenv from "dotenv";
-import fastify from "fastify";
-import "reflect-metadata";
-import { Container } from "typedi";
-import gqlSchema from "./utils/gqlSchema";
-import mountContext from "./utils/mountContext";
+import { ApolloServer } from 'apollo-server-fastify';
+import fastify from 'fastify';
+import 'reflect-metadata';
+import { Container } from 'typedi';
+import gqlSchema from './utils/gqlSchema';
+import mountContext from './utils/mountContext';
+import { mongoClient, initializeIndexes } from './utils/db';
+import { TaskManager, TaskScheduler } from './jobs';
 
 const app = fastify({ logger: true });
-
-// const result = dotenv.config();
-
-// if (result.error) {
-//   throw result.error;
-// }
-
-// console.log(result.parsed);
 
 const server = new ApolloServer({
   schema: gqlSchema,
@@ -29,6 +22,10 @@ const server = new ApolloServer({
 
 const start = async () => {
   try {
+    await mongoClient.connect();
+    await initializeIndexes();
+    TaskScheduler.start();
+    TaskManager.start();
     const port = 8080;
     app.register(server.createHandler());
     await app.listen(port);
