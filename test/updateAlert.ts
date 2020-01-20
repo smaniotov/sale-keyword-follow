@@ -12,12 +12,12 @@ should();
 
 describe('Update alert', async () => {
   const email = 'email@example.com';
-  const passphrase = 'iphone 1';
+  const keyword = 'iphone 1';
 
   beforeEach(async () => {
     await clearCollection();
     await initializeIndexes();
-    await createAlertEntity(email, passphrase);
+    await createAlertEntity(email, keyword);
   });
 
   after(async () => {

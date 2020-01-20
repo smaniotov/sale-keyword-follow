@@ -12,7 +12,7 @@ export interface IAggregatedAlert {
   name: string
   sendTo: string
   nextMessage: Date
-  passphrase: string
+  keyword: string
 }
 
 const ONE_MINUTE_IN_MS = 60000;
@@ -27,7 +27,7 @@ const aggregateQuery = () => ([
   { $addFields: { timeToSendFromNow: { $subtract: ['$nextMessage', new Date()] } } },
   {
     $project: {
-      _id: 1, timeToSendFromNow: 1, delay: 1, name: 1, sendTo: 1, nextMessage: 1, passphrase: 1,
+      _id: 1, timeToSendFromNow: 1, delay: 1, name: 1, sendTo: 1, nextMessage: 1, keyword: 1,
     },
   },
   { $match: { timeToSendFromNow: { $lt: ONE_MINUTE_IN_MS } } },

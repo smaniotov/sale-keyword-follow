@@ -68,7 +68,7 @@ describe('Create alert', async () => {
   //   this.timeout(150000);
   //   const createAlert = await getCreateAlert();
   //   await createAlert(newAlertData1);
-  //   const properties = ['delay', 'sendTo', 'passphrase'];
+  //   const properties = ['delay', 'sendTo', 'keyword'];
   //
   //   await queue.process(async (job: Job) => {
   //     try {

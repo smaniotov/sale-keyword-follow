@@ -12,5 +12,5 @@ export const mongoClient = new MongoClient(MONGO_URL, {
 
 export const initializeIndexes = async () => {
   mongoClient.db().collection(CollectionEnum.Alert)
-    .createIndex({ sendTo: 1, passphrase: 1 }, { unique: true });
+    .createIndex({ sendTo: 1, keyword: 1 }, { unique: true });
 };

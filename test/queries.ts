@@ -5,7 +5,7 @@ export const GET_ALL_ALERTS = gql`
         getAllAlerts {
             _id
             sendTo
-            passphrase
+            keyword
             delay
             nextMessage
         }
@@ -17,7 +17,7 @@ export const GET_ALERT_BY_SEND_TO = gql`
         getAlertsBySendTo(sendTo: $sendTo) {
             _id
             sendTo
-            passphrase
+            keyword
             delay
             isActive
             nextMessage
@@ -36,7 +36,7 @@ export const DELETE_ALERT = gql`
 export const CREATE_ALERT_INPUT = gql`
     input CreateAlertInputType {
         delay: Int!
-        passphrase: String!
+        keyword: String!
         sendTo: String!
     }
 `;
@@ -44,7 +44,7 @@ export const CREATE_ALERT_INPUT = gql`
 export const UPDATE_ALERT_INPUT = gql`
     input UpdateAlertInputType {
         delay: Int
-        passphrase: String
+        keyword: String
         sendTo: String
     }
 `;

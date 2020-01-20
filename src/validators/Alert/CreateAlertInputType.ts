@@ -11,7 +11,7 @@ export default class CreateAlertInputType implements Partial<AlertType> {
 
   @Field()
   @Length(3, 100)
-  passphrase: string;
+  keyword: string;
 
   @Field()
   @IsEmail()

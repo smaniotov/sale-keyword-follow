@@ -11,7 +11,7 @@ export default class UpdateAlertInputType implements Partial<AlertType> {
 
   @Field({ nullable: true })
   @Length(3, 100)
-  passphrase?: string;
+  keyword?: string;
 
   @Field({ nullable: true })
   @IsEmail()

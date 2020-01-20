@@ -15,7 +15,7 @@ export default class TaskManager {
       try {
         const alert: IAggregatedAlert = job.data;
         const data = await ebay.findItemsByKeywords({
-          keywords: alert.passphrase,
+          keywords: alert.keyword,
           sortOrder: 'PricePlusShippingLowest',
           entriesPerPage: 3,
         });
@@ -28,8 +28,8 @@ export default class TaskManager {
           const mailOptions = {
             from: EMAIL_ADDRESS,
             to: alert.sendTo,
-            subject: `Periodic Ebay Alert - ${alert.passphrase}`,
-            text: `The top sales for your search "${alert.passphrase}":\n`
+            subject: `Periodic Ebay Alert - ${alert.keyword}`,
+            text: `The top sales for your search "${alert.keyword}":\n`
               + `${emailData.map((item, index) => `${index + 1}.\nTitle: ${item.title} \nURL: ${item.URL} \nPrice: USD $${item.price}\n`).join('\n')}`,
           };
           const sentEmail = await transporter.sendMail(mailOptions);

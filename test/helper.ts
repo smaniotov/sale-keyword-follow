@@ -24,12 +24,12 @@ export class NewAlertDataWrapper {
 
   public sendTo = 'email.example@example.com';
 
-  public passphrase = 'iPhone 10';
+  public keyword = 'iPhone 10';
 
   build = () => ({
     delay: this.delay,
     sendTo: this.sendTo,
-    passphrase: this.passphrase,
+    keyword: this.keyword,
   });
 
   set = (item: string, value: any) => {
@@ -80,8 +80,8 @@ export const getAlertBySendToMethod = async () => {
   });
 };
 
-export const createAlertEntity = async (email: string, passphrase: string) => {
-  const data = new NewAlertDataWrapper().set('sendTo', email).set('passphrase', passphrase).build();
+export const createAlertEntity = async (email: string, keyword: string) => {
+  const data = new NewAlertDataWrapper().set('sendTo', email).set('keyword', keyword).build();
   const createAlert = await getCreateAlert();
   return createAlert(data);
 };

@@ -4,14 +4,14 @@ export interface IAlert {
   delay: number
   nextMessage: Date
   history: IAlertHistory[]
-  passphrase: string
+  keyword: string
   isActive: boolean
   createdAt: Date
   updatedAt: Date
 }
 
 export interface IAlertHistory {
-  passphrase: string
+  keyword: string
   sentTo: string
   body: string
   sentAt: Date
@@ -19,6 +19,6 @@ export interface IAlertHistory {
 
 export enum AlertDelayEnum {
   TwoMinutes = 2,
-  FiveMinutes = 5,
-  TenMinutes = 10
+  TemMinutes = 10,
+  ThirtyMinutes = 30
 }

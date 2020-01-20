@@ -6,11 +6,11 @@ import { IAlert } from '../../models';
 @ObjectType()
 export default class AlertType implements Partial<IAlert> {
   constructor({
-    sendTo, passphrase, delay,
+    sendTo, keyword, delay,
     isActive, nextMessage, createdAt, updatedAt,
   }) {
     this.sendTo = sendTo;
-    this.passphrase = passphrase;
+    this.keyword = keyword;
     this.delay = delay;
     this.isActive = isActive;
     this.createdAt = createdAt;
@@ -25,7 +25,7 @@ export default class AlertType implements Partial<IAlert> {
   sendTo: string;
 
   @Field(() => String)
-  passphrase: string;
+  keyword: string;
 
   @Field(() => Number)
   delay: number;
