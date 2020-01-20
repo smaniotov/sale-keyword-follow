@@ -6,7 +6,7 @@ import { TaskManager, TaskScheduler } from './jobs';
 import initializeApolloServer from './utils/initializeApolloServer';
 
 dotenv.config();
-const app = fastify();
+const app = fastify({ logger: true });
 
 const server = initializeApolloServer();
 const { EMAIL_ADDRESS = '', EMAIL_PASSWORD = '' } = process.env;
