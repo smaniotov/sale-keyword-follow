@@ -18,3 +18,5 @@ services:
     environment:
       - EMAIL_ADDRESS
       - EMAIL_PASSWORD
+      - EBAY_CLIENT_ID
+      - EBAY_CLIENT_SECRET
