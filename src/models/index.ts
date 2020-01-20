@@ -1,2 +1,2 @@
 export * from './Alert';
-export * from './Repository';
+export { default as IRepository } from './Repository';

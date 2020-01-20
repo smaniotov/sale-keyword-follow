@@ -1,10 +1,6 @@
-import { Collection, DeleteWriteOpResultObject, InsertOneWriteOpResult, UpdateWriteOpResult } from 'mongodb';
+import { DeleteWriteOpResultObject, InsertOneWriteOpResult, UpdateWriteOpResult } from 'mongodb';
 
-export enum CollectionEnum {
-  Alert = 'Alert'
-}
-
-export interface IRepository<T> {
+export default interface IRepository<T> {
   insertOne: (payload: Partial<T>) => Promise<InsertOneWriteOpResult<any>>
   deleteOne: (deleteQuery: Partial<T>) => Promise<DeleteWriteOpResultObject>
   updateOne: (updateQuery: Partial<T>, updatePayload: Partial<T>) => Promise<UpdateWriteOpResult>

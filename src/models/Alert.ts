@@ -1,5 +1,8 @@
 export interface IAlert {
+  _id?: any
   sendTo: string
+  delay: number
+  nextMessage: Date
   history: IAlertHistory[]
   passphrase: string
   isActive: boolean
