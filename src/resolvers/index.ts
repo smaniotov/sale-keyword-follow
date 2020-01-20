@@ -1,1 +1,1 @@
-export * from "./AlertResolver"
+export { default as AlertResolver } from './AlertResolver';

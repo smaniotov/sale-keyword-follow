@@ -1,35 +1,30 @@
-import { ApolloServer } from "apollo-server-fastify";
-import dotenv from "dotenv";
-import fastify from "fastify";
-import "reflect-metadata";
-import { Container } from "typedi";
-import gqlSchema from "./utils/gqlSchema";
-import mountContext from "./utils/mountContext";
+import fastify from 'fastify';
+import dotenv from 'dotenv';
+import 'reflect-metadata';
+import { mongoClient, initializeIndexes } from './utils/db';
+import { TaskManager, TaskScheduler } from './jobs';
+import initializeApolloServer from './utils/initializeApolloServer';
 
+dotenv.config();
 const app = fastify({ logger: true });
 
-// const result = dotenv.config();
+const server = initializeApolloServer();
+const { EMAIL_ADDRESS = '', EMAIL_PASSWORD = '' } = process.env;
 
-// if (result.error) {
-//   throw result.error;
-// }
+(async () => {
+  const port = 8080;
 
-// console.log(result.parsed);
-
-const server = new ApolloServer({
-  schema: gqlSchema,
-  context: mountContext,
-  formatResponse: (response: any, { context }: any) => {
-    Container.reset(context.requestId);
-    return response;
-  },
-  playground: { version: '1.7.25' },
-  introspection: true,
-});
-
-const start = async () => {
   try {
-    const port = 8080;
+    await mongoClient.connect();
+    await initializeIndexes();
+    TaskScheduler.start();
+    TaskManager.start({
+      service: 'gmail',
+      auth: {
+        user: EMAIL_ADDRESS,
+        pass: EMAIL_PASSWORD,
+      },
+    });
     app.register(server.createHandler());
     await app.listen(port);
     app.log.info(`Server is listening in port ${port}`);
@@ -37,6 +32,4 @@ const start = async () => {
     app.log.error(e);
     process.exit(1);
   }
-};
-
-start();
+})();
