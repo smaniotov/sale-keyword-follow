@@ -3,9 +3,10 @@ import {
   Arg, Mutation, Query, Resolver,
 } from 'type-graphql';
 import 'reflect-metadata';
+import { ObjectID } from 'mongodb';
 import { AlertType } from '../types';
-import { CreateOrUpdateAlertInputType } from '../validators';
 import { AlertService } from '../services';
+import { CreateAlertInputType, UpdateAlertInputType } from '../validators/Alert';
 
 @Service()
 @Resolver(AlertType)
@@ -16,13 +17,30 @@ export default class AlertResolver {
     this.alertService = alertService;
   }
 
-  @Query(() => AlertType)
-  async getAlerts(@Arg('sendTo') sendTo: string) {
+  @Query(() => [AlertType])
+  async getAlertsBySendTo(@Arg('sendTo') sendTo: string) {
     return this.alertService.findAlerts({ sendTo });
   }
 
+  @Query(() => [AlertType])
+  async getAllAlerts() {
+    return this.alertService.findAlerts({});
+  }
+
   @Mutation(() => String)
-  async createAlert(@Arg('alert') alert: CreateOrUpdateAlertInputType) {
+  async createAlert(@Arg('alert') alert: CreateAlertInputType) {
     return this.alertService.createAlert(alert);
+  }
+
+  @Mutation(() => String)
+  async updateAlert(@Arg('id') id: string, @Arg('alert') alert: UpdateAlertInputType) {
+    await this.alertService.updateAlert({ _id: new ObjectID(id) }, alert);
+    return 'Ok';
+  }
+
+  @Mutation(() => String)
+  async deleteAlert(@Arg('id') id: string) {
+    await this.alertService.deleteAlert({ _id: new ObjectID(id) });
+    return 'Ok';
   }
 }

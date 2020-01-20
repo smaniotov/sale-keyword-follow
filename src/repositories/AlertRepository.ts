@@ -1,6 +1,7 @@
 import { Service } from 'typedi';
 import BaseRepository from './BaseRepository';
-import { CollectionEnum, IAlert } from '../models';
+import { IAlert } from '../models';
+import { CollectionEnum } from '../enums';
 
 @Service()
 export default class AlertRepository extends BaseRepository<IAlert> {

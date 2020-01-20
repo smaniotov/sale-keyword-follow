@@ -1,5 +1,5 @@
 import {
-  Collection, DeleteWriteOpResultObject, InsertOneWriteOpResult, UpdateWriteOpResult,
+  Collection, DeleteWriteOpResultObject, InsertOneWriteOpResult, UpdateQuery, UpdateWriteOpResult,
 } from 'mongodb';
 import { mongoClient } from '../utils/db';
 import { IRepository } from '../models';
@@ -20,7 +20,7 @@ export default class BaseRepository<T> implements IRepository<T> {
   public deleteOne = async (deleteQuery): Promise<DeleteWriteOpResultObject> => this.getCollection()
     .deleteOne(deleteQuery);
 
-  public updateOne = async (updateQuery: Partial<T>, updatePayload: Partial<T>)
+  public updateOne = async (updateQuery: Partial<T>, updatePayload: UpdateQuery<Partial<T>>)
     : Promise<UpdateWriteOpResult> => (
     this.getCollection().updateOne(updateQuery, updatePayload)
   );
