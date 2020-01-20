@@ -1,3 +1,8 @@
-import Bull from 'bull';
+import Queue from 'bull';
+import dotenv from 'dotenv';
 
-export default new Bull('alert_queue');
+dotenv.config();
+
+const { REDIS_URL = '' } = process.env;
+
+export default new Queue('alert_queue', REDIS_URL);
