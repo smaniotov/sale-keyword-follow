@@ -10,7 +10,7 @@ import { initializeIndexes } from '../src/utils/db';
 
 should();
 
-describe('Create alert', async () => {
+describe('Update alert', async () => {
   const email = 'email@example.com';
   const passphrase = 'iphone 1';
 

@@ -12,7 +12,7 @@ import {
 
 should();
 
-describe('Create alert', async () => {
+describe('Delete alert', async () => {
   const newAlertData1 = new NewAlertDataWrapper().build();
 
   before(async () => clearCollection());

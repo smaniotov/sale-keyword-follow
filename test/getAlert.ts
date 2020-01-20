@@ -10,7 +10,7 @@ import {
 
 should();
 
-describe('Create alert', async () => {
+describe('Get alert', async () => {
   const email1 = 'email1@example.com';
   const email2 = 'email2@example.com';
 
