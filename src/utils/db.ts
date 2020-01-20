@@ -1,13 +1,15 @@
+import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
-import get from 'lodash/get';
-import redis from 'redis';
-import env from './env';
-import { CollectionEnum } from '../models';
+import { CollectionEnum } from '../enums';
 
-const url = get(env.parsed, 'DB_URL', '');
+dotenv.config();
 
-export const mongoClient = new MongoClient(url, { useNewUrlParser: true });
-export const redisClient = redis.createClient();
+const { MONGO_URL = '' } = process.env;
+
+export const mongoClient = new MongoClient(MONGO_URL, {
+  useNewUrlParser: true, useUnifiedTopology: true,
+});
+
 export const initializeIndexes = async () => {
   mongoClient.db().collection(CollectionEnum.Alert)
     .createIndex({ sendTo: 1, passphrase: 1 }, { unique: true });

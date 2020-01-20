@@ -2,7 +2,7 @@ import { Container } from 'typedi';
 import AlertService from '../services/AlertService';
 import AlertRepository from '../repositories/AlertRepository';
 
-export default ({ req }) => {
+export default (req) => {
   const requestId = req.id;
   const container = Container.of(requestId);
   const context = {
