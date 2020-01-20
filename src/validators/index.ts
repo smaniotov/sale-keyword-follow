@@ -1,1 +1,1 @@
-export { default as CreateOrUpdateAlertInputType } from './Alert';
+export * from './Alert';

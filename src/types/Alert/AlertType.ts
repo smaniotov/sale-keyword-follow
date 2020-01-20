@@ -1,21 +1,25 @@
 import 'reflect-metadata';
+import { ObjectID } from 'mongodb';
 import { Field, ObjectType } from 'type-graphql';
-import AlertHistoryType from './AlertHistoryType';
 import { IAlert } from '../../models';
 
 @ObjectType()
-export default class AlertType implements Required<IAlert> {
+export default class AlertType implements Partial<IAlert> {
   constructor({
-    sendTo, passphrase, delay, isActive, nextMessage, createdAt, history = [],
+    sendTo, passphrase, delay,
+    isActive, nextMessage, createdAt, updatedAt,
   }) {
     this.sendTo = sendTo;
     this.passphrase = passphrase;
     this.delay = delay;
     this.isActive = isActive;
-    this.history = history;
     this.createdAt = createdAt;
     this.nextMessage = nextMessage;
+    this.updatedAt = updatedAt;
   }
+
+  @Field(() => String)
+  _id?: ObjectID;
 
   @Field(() => String)
   sendTo: string;
@@ -28,9 +32,6 @@ export default class AlertType implements Required<IAlert> {
 
   @Field(() => Boolean)
   isActive: boolean;
-
-  @Field(() => [AlertHistoryType])
-  history: AlertHistoryType[];
 
   @Field(() => Date)
   nextMessage: Date;
