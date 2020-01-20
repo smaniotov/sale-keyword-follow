@@ -2,17 +2,15 @@ import { Job } from 'bull';
 import get from 'lodash/get';
 import nodeMailer from 'nodemailer';
 import queue from './queue';
-import ebay from '../utils/Ebay';
+import ebay, { normalizeSales } from '../utils/Ebay';
 import { IAggregatedAlert } from './TaskScheduler';
-import env from '../utils/env';
 
 const {
   EMAIL_ADDRESS = '',
-  EMAIL_PASSWORD = '',
-} = env.parsed || {};
+} = process.env;
 
 export default class TaskManager {
-  static start() {
+  static start(transporterData: any) {
     queue.process(async (job: Job<IAggregatedAlert>) => {
       try {
         const alert: IAggregatedAlert = job.data;
@@ -24,24 +22,18 @@ export default class TaskManager {
         const searchResult = get(data, '[0].searchResult[0]');
 
         if (searchResult) {
-          const transporter = nodeMailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: EMAIL_ADDRESS,
-              pass: EMAIL_PASSWORD,
-            },
-            debug: true,
-            logger: true,
-          } as any);
+          const emailData = normalizeSales(searchResult);
+          const transporter = nodeMailer.createTransport(transporterData);
 
           const mailOptions = {
             from: EMAIL_ADDRESS,
             to: alert.sendTo,
-            subject: 'Periodic Ebay sales',
-            text: `The best sales choices for your search "${alert.passphrase}" is: \n ${JSON.stringify(searchResult)}`,
+            subject: `Periodic Ebay Alert - ${alert.passphrase}`,
+            text: `The top sales for your search "${alert.passphrase}":\n`
+              + `${emailData.map((item, index) => `${index + 1}.\nTitle: ${item.title} \nURL: ${item.URL} \nPrice: USD $${item.price}\n`).join('\n')}`,
           };
-          const a = await transporter.sendMail(mailOptions);
-          console.log(a);
+          const sentEmail = await transporter.sendMail(mailOptions);
+          console.log({ sentEmail, currentTime: new Date() });
         }
       } catch (e) {
         console.error(e);
