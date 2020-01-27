@@ -5,7 +5,6 @@ import { Service } from 'typedi';
 import AlertRepository from '../repositories/AlertRepository';
 import { AlertType } from '../types/Alert';
 import { CreateAlertInputType, UpdateAlertInputType } from '../validators/Alert';
-import { PageSortOption } from '../models';
 
 @Service()
 export default class AlertService {
@@ -16,7 +15,7 @@ export default class AlertService {
   }
 
   public findAlertsPage = async (
-    keyword: string, pageNum: number, size: number, sort: PageSortOption,
+    keyword: string, pageNum: number, size: number, sort: number,
   ) => {
     const keywordRegex = keyword ? new RegExp(`${keyword}`, 'gi') : null;
     const keys = ['keyword', 'delay', 'sendTo'];
