@@ -41,6 +41,26 @@ export const CREATE_ALERT_INPUT = gql`
     }
 `;
 
+export const ALERT_TYPE = gql`
+    type AlertType {
+        _id: String!
+        sendTo: String!
+        keyword: String!
+        delay: Float!
+        isActive: Boolean!
+        nextMessage: DateTime!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+    }
+`;
+
+export const TYPE_ALERTS_PAGE = gql`
+    type PaginatedAlertTypeResponse {
+        data: [AlertType!]!
+        count: Float!
+    }
+`;
+
 export const UPDATE_ALERT_INPUT = gql`
     input UpdateAlertInputType {
         delay: Int
@@ -48,6 +68,26 @@ export const UPDATE_ALERT_INPUT = gql`
         sendTo: String
     }
 `;
+
+export const GET_ALERTS_PAGE = gql`
+    query getAlertsPage($keyword: String, $size: Float, $page: Float, $sort: Float){
+        getAlertsPage(
+            size: $size
+            page: $page
+            keyword: $keyword
+            sort: $sort
+        ) {
+            data {
+                _id
+                keyword
+                sendTo
+                nextMessage
+            }
+            count
+        }
+    }
+`;
+
 
 export const UPDATE_ALERT = gql`
     mutation updateAlert($id: String!, $alert: UpdateAlertInputType!) {
