@@ -2,7 +2,7 @@ import {
   Collection, DeleteWriteOpResultObject, InsertOneWriteOpResult, UpdateQuery, UpdateWriteOpResult,
 } from 'mongodb';
 import { mongoClient } from '../utils/db';
-import { IRepository } from '../models';
+import { IRepository, IPage } from '../models';
 
 export default class BaseRepository<T> implements IRepository<T> {
   private readonly collectionName: string;
@@ -30,4 +30,27 @@ export default class BaseRepository<T> implements IRepository<T> {
 
   public findAll = async (findQuery: Partial<T>): Promise<T[]> => this.getCollection()
     .find(findQuery).toArray();
+
+  public findPage = async (findQuery: any, page: number, size: number, sort: number = 1):
+    Promise<IPage<T>[]> => {
+    const skip = page * size;
+    return this.getCollection().aggregate([
+      {
+        $facet: {
+          data: [
+            { $match: findQuery },
+            { $sort: { createdAt: sort } },
+            { $skip: skip },
+            { $limit: size },
+          ],
+          count: [
+            { $match: findQuery },
+            { $count: 'totalElements' },
+          ],
+        },
+      },
+      { $unwind: { path: '$count', preserveNullAndEmptyArrays: true } },
+      { $set: { count: { $ifNull: ['$count.totalElements', 0] } } },
+    ]).toArray();
+  };
 }

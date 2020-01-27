@@ -1,7 +1,7 @@
 import { createTestClient } from 'apollo-server-testing';
 import { Collection } from 'mongodb';
 import {
-  CREATE_ALERT, DELETE_ALERT, GET_ALERT_BY_SEND_TO, GET_ALL_ALERTS, UPDATE_ALERT,
+  CREATE_ALERT, DELETE_ALERT, GET_ALERT_BY_SEND_TO, GET_ALL_ALERTS, UPDATE_ALERT, GET_ALERTS_PAGE,
 } from './queries';
 import 'mocha';
 import { mongoClient } from '../src/utils/db';
@@ -72,6 +72,16 @@ export const getAllAlertsMethod = async () => {
   });
 };
 
+export const getAllertsPageMethod = async () => {
+  const { query } = getTestClient();
+  return async (keyword: string, page: number, size: number, sort?: number) => query({
+    query: GET_ALERTS_PAGE,
+    variables: {
+      keyword, page, size, sort,
+    },
+  });
+};
+
 export const getAlertBySendToMethod = async () => {
   const { query } = getTestClient();
   return async (sendTo: string) => query({
@@ -81,7 +91,10 @@ export const getAlertBySendToMethod = async () => {
 };
 
 export const createAlertEntity = async (email: string, keyword: string) => {
-  const data = new NewAlertDataWrapper().set('sendTo', email).set('keyword', keyword).build();
+  const data = new NewAlertDataWrapper()
+    .set('sendTo', email)
+    .set('keyword', keyword)
+    .build();
   const createAlert = await getCreateAlert();
   return createAlert(data);
 };
