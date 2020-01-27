@@ -7,6 +7,12 @@ import { ObjectID } from 'mongodb';
 import { AlertType } from '../types';
 import { AlertService } from '../services';
 import { CreateAlertInputType, UpdateAlertInputType } from '../validators/Alert';
+import PageTypeWrapper from '../types/util/PageType';
+import { PageSortOption } from '../models';
+
+const AlertPage = PageTypeWrapper(AlertType);
+type AlertPage = InstanceType<typeof AlertPage>;
+
 
 @Service()
 @Resolver(AlertType)
@@ -20,6 +26,16 @@ export default class AlertResolver {
   @Query(() => [AlertType])
   async getAlertsBySendTo(@Arg('sendTo') sendTo: string) {
     return this.alertService.findAlerts({ sendTo });
+  }
+
+  @Query(() => AlertPage)
+  async getAlertsPage(
+    @Arg('keyword', { nullable: true }) keyword: string,
+      @Arg('page', { nullable: true }) page: number = 0,
+      @Arg('size', { nullable: true }) size: number = 10,
+      @Arg('sort', { nullable: true }) sort: PageSortOption,
+  ): Promise<AlertPage> {
+    return this.alertService.findAlertsPage(keyword, page, size, sort);
   }
 
   @Query(() => [AlertType])
