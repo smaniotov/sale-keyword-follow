@@ -7,8 +7,8 @@
     "start": "nodemon",
     "build": "webpack --config ./tools/webpack-dev.config.js",
     "build:prod": "webpack --config ./tools/webpack-prod.config.js",
-    "test": "mocha -r ts-node/register test/**/*.ts",
-    "tdd": "mocha -r ts-node/register test/**/*.ts --watch --watch-files test/**/*.ts"
+    "test": "TEST=true mocha -r ts-node/register test/**/*.ts",
+    "tdd": "TEST=true mocha -r ts-node/register test/**/*.ts --watch --watch-files test/**/*.ts"
   },
   "keywords": [],
   "author": "Vinícius Smanioto",
